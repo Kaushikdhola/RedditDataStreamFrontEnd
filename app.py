@@ -1,8 +1,10 @@
 from flask import Flask, render_template, request, jsonify
 import requests
+import os
 
 app = Flask(__name__)
 
+api_url = os.environ.get('GENERATED_API_LIKE')
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -11,8 +13,7 @@ def index():
 
     elif request.method == 'POST':
         print("Sending request to Lambda")
-        url = "https://11uawj4zrf.execute-api.us-east-1.amazonaws.com/datastream1/reddit-to-kafka"
-        response = requests.post(url, json=request.json)
+        response = requests.post(api_url, json=request.json)
         return jsonify(response.json())
 
 if __name__ == '__main__':
